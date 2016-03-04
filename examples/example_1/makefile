@@ -18,7 +18,7 @@ elseifeq ($(OS),Windows_NT)
 	MKDIR = mkdir
 	TARGET_EXTENSION=.exe
 else
-	CLEANUP = rm -f
+	CLEANUP = rm -f $(TARGET1) $(TARGET2)
 	MKDIR = mkdir -p
 	TARGET_EXTENSION=.out
 endif
@@ -53,12 +53,16 @@ SYMBOLS=-DTEST
 
 all: clean default
 
-default:
+default: test2 test1
+
+test1: 
 	ruby $(UNITY_ROOT)/auto/generate_test_runner.rb test/TestProductionCode.c  test/test_runners/TestProductionCode_Runner.c
-	ruby $(UNITY_ROOT)/auto/generate_test_runner.rb test/TestProductionCode2.c test/test_runners/TestProductionCode2_Runner.c
 	$(C_COMPILER) $(CFLAGS) $(INC_DIRS) $(SYMBOLS) $(SRC_FILES1) -o $(TARGET1)
-	$(C_COMPILER) $(CFLAGS) $(INC_DIRS) $(SYMBOLS) $(SRC_FILES2) -o $(TARGET2)
 	./$(TARGET1)
+
+test2: 
+	ruby $(UNITY_ROOT)/auto/generate_test_runner.rb test/TestProductionCode2.c test/test_runners/TestProductionCode2_Runner.c
+	$(C_COMPILER) $(CFLAGS) $(INC_DIRS) $(SYMBOLS) $(SRC_FILES2) -o $(TARGET2)
 	./$(TARGET2)
 
 clean:

@@ -21,7 +21,7 @@ void test_FindFunction_WhichIsBroken_ShouldReturnZeroIfItemIsNotInList_WhichWork
 {
   //All of these should pass
   TEST_ASSERT_EQUAL(0, FindFunction_WhichIsBroken(78));
-  TEST_ASSERT_EQUAL(0, FindFunction_WhichIsBroken(1));
+  TEST_ASSERT_EQUAL(0, FindFunction_WhichIsBroken(12));
   TEST_ASSERT_EQUAL(0, FindFunction_WhichIsBroken(33));
   TEST_ASSERT_EQUAL(0, FindFunction_WhichIsBroken(999));
   TEST_ASSERT_EQUAL(0, FindFunction_WhichIsBroken(-1));
@@ -35,7 +35,7 @@ void test_FindFunction_WhichIsBroken_ShouldReturnTheIndexForItemsInList_WhichWil
   // Notice the rest of these didn't get a chance to run because the line above failed.  
   // Unit tests abort each test function on the first sign of trouble. 
   // Then NEXT test function runs as normal.
-  TEST_ASSERT_EQUAL(8, FindFunction_WhichIsBroken(8888));
+  TEST_ASSERT_EQUAL(8, FindFunction_WhichIsBroken(888));
 }
 
 void test_FunctionWhichReturnsLocalVariable_ShouldReturnTheCurrentCounterValue(void)
@@ -58,5 +58,5 @@ void test_FunctionWhichReturnsLocalVariable_ShouldReturnCurrentCounter_ButFailsB
 {
     //Sometimes you get the test wrong.  When that happens, you get a failure too... and a quick look should tell
     // you what actually happened...which in this case was a failure to setup the initial condition.
-    TEST_ASSERT_EQUAL_HEX(0x1234, FunctionWhichReturnsLocalVariable());
+    TEST_ASSERT_EQUAL_HEX(0x5a5a, FunctionWhichReturnsLocalVariable());
 }
