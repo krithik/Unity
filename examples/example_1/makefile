@@ -18,7 +18,7 @@ elseifeq ($(OS),Windows_NT)
 	MKDIR = mkdir
 	TARGET_EXTENSION=.exe
 else
-	CLEANUP = rm -f $(TARGET1) $(TARGET2)
+	CLEANUP = rm -f $(TARGET1) $(TARGET2) $(RUNNER1) $(RUNNER2)
 	MKDIR = mkdir -p
 	TARGET_EXTENSION=.out
 endif
@@ -46,8 +46,11 @@ TARGET_BASE1=test1
 TARGET_BASE2=test2
 TARGET1 = $(TARGET_BASE1)$(TARGET_EXTENSION)
 TARGET2 = $(TARGET_BASE2)$(TARGET_EXTENSION)
-SRC_FILES1=$(UNITY_ROOT)/src/unity.c src/ProductionCode.c  test/TestProductionCode.c  test/test_runners/TestProductionCode_Runner.c
-SRC_FILES2=$(UNITY_ROOT)/src/unity.c src/ProductionCode2.c test/TestProductionCode2.c test/test_runners/TestProductionCode2_Runner.c
+RUNNER1 = test/test_runners/TestProductionCode_Runner.c
+RUNNER2 = test/test_runners/TestProductionCode2_Runner.c
+
+SRC_FILES1=$(UNITY_ROOT)/src/unity.c src/ProductionCode.c  test/TestProductionCode.c  $(RUNNER1)
+SRC_FILES2=$(UNITY_ROOT)/src/unity.c src/ProductionCode2.c test/TestProductionCode2.c $(RUNNER2)
 INC_DIRS=-Isrc -I$(UNITY_ROOT)/src
 SYMBOLS=-DTEST
 
@@ -56,12 +59,12 @@ all: clean default
 default: test2 test1
 
 test1: 
-	ruby $(UNITY_ROOT)/auto/generate_test_runner.rb test/TestProductionCode.c  test/test_runners/TestProductionCode_Runner.c
+	ruby $(UNITY_ROOT)/auto/generate_test_runner.rb test/TestProductionCode.c  $(RUNNER1)
 	$(C_COMPILER) $(CFLAGS) $(INC_DIRS) $(SYMBOLS) $(SRC_FILES1) -o $(TARGET1)
 	./$(TARGET1)
 
 test2: 
-	ruby $(UNITY_ROOT)/auto/generate_test_runner.rb test/TestProductionCode2.c test/test_runners/TestProductionCode2_Runner.c
+	ruby $(UNITY_ROOT)/auto/generate_test_runner.rb test/TestProductionCode2.c $(RUNNER2)
 	$(C_COMPILER) $(CFLAGS) $(INC_DIRS) $(SYMBOLS) $(SRC_FILES2) -o $(TARGET2)
 	./$(TARGET2)
 
